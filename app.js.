@@ -1,0 +1,33 @@
+// إعدادات المتجر — يمكنك تعديلها لاحقاً من لوحة الإدارة
+const DEFAULT_WHATSAPP = "967782707618"; // اليمن +967 ثم الرقم
+const ADMIN_PASSWORD = "admin123"; // غيّرها قبل نشر المتجر
+const starterProducts = [
+ {id:1,name:"باقة رومانسية مميزة",price:129,category:"عروض",description:"باقة أنيقة للمناسبات الخاصة.",image:""},
+ {id:2,name:"مجموعة هدايا أنيقة",price:99,category:"هدايا",description:"اختيار جميل لإضافة لمسة مميزة.",image:""},
+ {id:3,name:"مجموعة العناية الشخصية",price:159,category:"العناية",description:"منتجات عناية مختارة بعناية.",image:""},
+ {id:4,name:"دليل الحياة السعيدة",price:49,category:"كتب وإرشادات",description:"محتوى إرشادي للعلاقة والتواصل.",image:""}
+];
+const $=s=>document.querySelector(s);
+let products=JSON.parse(localStorage.getItem("sr_products")||"null")||starterProducts;
+let cart=JSON.parse(localStorage.getItem("sr_cart")||"[]");
+let settings=JSON.parse(localStorage.getItem("sr_settings")||"null")||{whatsapp:DEFAULT_WHATSAPP,store:"السعادة الرومانسية"};
+let orders=JSON.parse(localStorage.getItem("sr_orders")||"[]");
+const save=()=>{localStorage.setItem("sr_products",JSON.stringify(products));localStorage.setItem("sr_cart",JSON.stringify(cart));localStorage.setItem("sr_settings",JSON.stringify(settings));localStorage.setItem("sr_orders",JSON.stringify(orders));};
+function renderProducts(){let q=$("#search").value.trim();$("#productGrid").innerHTML=products.filter(p=>(p.name+" "+p.category).includes(q)).map(p=>`<article class="product"><img src="${p.image||'https://placehold.co/600x420/f1e8e6/6e304b?text=Product'}" alt="${p.name}"><div class="body"><h3>${p.name}</h3><p>${p.description||""}</p><div class="price">${p.price} ر.س</div><button class="primary" onclick="addToCart(${p.id})">أضف إلى السلة</button></div></article>`).join("")||"<p>لا توجد منتجات مطابقة.</p>";}
+function renderCart(){let count=cart.reduce((s,x)=>s+x.qty,0);$("#cartCount").textContent=count;$("#cartItems").innerHTML=cart.map(x=>`<div class="cart-row"><span>${x.name} × ${x.qty}</span><span>${x.price*x.qty} ر.س <button onclick="removeCart(${x.id})">حذف</button></span></div>`).join("")||"<p>السلة فارغة حالياً.</p>";$("#cartTotal").textContent=cart.reduce((s,x)=>s+x.price*x.qty,0);}
+window.addToCart=id=>{let p=products.find(x=>x.id===id);let item=cart.find(x=>x.id===id);if(item)item.qty++;else cart.push({...p,qty:1});save();renderCart();};
+window.removeCart=id=>{cart=cart.filter(x=>x.id!==id);save();renderCart();};
+function open(id){$("#"+id).classList.add("show")}function close(id){$("#"+id).classList.remove("show")}
+$("#cartOpen").onclick=()=>{renderCart();open("cartModal")};$("#adminOpen").onclick=()=>open("adminModal");
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>close(b.dataset.close));
+document.querySelectorAll(".modal").forEach(m=>m.addEventListener("click",e=>{if(e.target===m)m.classList.remove("show")}));
+$("#search").addEventListener("input",renderProducts);
+$("#checkoutForm").onsubmit=e=>{e.preventDefault();if(!cart.length)return alert("السلة فارغة");let f=new FormData(e.target);let order={date:new Date().toISOString(),customer:f.get("customer"),phone:f.get("phone"),address:f.get("address"),notes:f.get("notes"),items:cart,total:cart.reduce((s,x)=>s+x.price*x.qty,0)};orders.push(order);save();let lines=cart.map(x=>`- ${x.name} × ${x.qty} = ${x.price*x.qty} ر.س`).join("%0A");let msg=`طلب جديد من ${settings.store}%0Aالاسم: ${encodeURIComponent(order.customer)}%0Aالهاتف: ${encodeURIComponent(order.phone)}%0Aالعنوان: ${encodeURIComponent(order.address)}%0A${lines}%0Aالإجمالي: ${order.total} ر.س%0Aالدفع: عند الاستلام%0Aملاحظات: ${encodeURIComponent(order.notes||"لا يوجد")}`;window.open(`https://wa.me/${settings.whatsapp}?text=${msg}`,"_blank");cart=[];save();renderCart();e.target.reset();close("cartModal");};
+$("#loginBtn").onclick=()=>{if($("#adminPassword").value===ADMIN_PASSWORD){$("#loginArea").hidden=true;$("#adminArea").hidden=false;renderAdmin();$("#whatsappSetting").value=settings.whatsapp;$("#storeNameSetting").value=settings.store;}else alert("كلمة المرور غير صحيحة");};
+function renderAdmin(){$("#adminProducts").innerHTML=products.map(p=>`<div class="admin-row"><span>${p.name} — ${p.price} ر.س</span><button onclick="deleteProduct(${p.id})">حذف</button></div>`).join("")||"<p>لا توجد منتجات.</p>";}
+window.deleteProduct=id=>{if(confirm("حذف المنتج؟")){products=products.filter(p=>p.id!==id);save();renderProducts();renderAdmin();}};
+$("#productForm").onsubmit=e=>{e.preventDefault();let f=new FormData(e.target);products.push({id:Date.now(),name:f.get("name"),price:Number(f.get("price")),category:f.get("category"),image:f.get("image"),description:f.get("description")});save();renderProducts();renderAdmin();e.target.reset();alert("تمت إضافة المنتج");};
+document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-tab]").forEach(x=>x.classList.toggle("active",x===b));$("#manageTab").hidden=b.dataset.tab!=="manage";$("#settingsTab").hidden=b.dataset.tab!=="settings";});
+$("#saveSettings").onclick=()=>{settings.whatsapp=$("#whatsappSetting").value.replace(/\D/g,"");settings.store=$("#storeNameSetting").value.trim()||"السعادة الرومانسية";save();alert("تم حفظ الإعدادات");};
+$("#exportOrders").onclick=()=>{let csv="date,customer,phone,address,total\\n"+orders.map(o=>[o.date,o.customer,o.phone,o.address,o.total].map(v=>'"'+String(v||"").replace(/"/g,'""')+'"').join(",")).join("\\n");let a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\\ufeff"+csv],{type:"text/csv;charset=utf-8"}));a.download="orders.csv";a.click();};
+$("#year").textContent=new Date().getFullYear();renderProducts();renderCart();
