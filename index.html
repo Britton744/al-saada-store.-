@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- تحسينات محركات البحث جوجل SEO -->
+    <title>متجر السعادة الرومانسية - BRITTON LIFE | ألعاب زوجية ومنتجات خاصة</title>
+    <meta name="description" content="متجر السعادة الرومانسية لبيع الألعاب الزوجية، قضبان صناعية، مهبل صناعي، سدادات، ومستلزمات السعادة الزوجية بتغليف ووصول آمن وسري.">
+    <meta name="keywords" content="متجر السعادة الرومانسية, بريتون لايف, BRITTON LIFE, ألعاب زوجية, قضبان صناعية, مهبل صناعي, سدادة, لانجري, مساج">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Tajawal', sans-serif; background-color: #09010a; color: #ffffff; padding-bottom: 70px; }
+        .pink-neon-glow { text-shadow: 0 0 12px rgba(236, 72, 153, 0.7); }
+        .glass-card { background: rgba(22, 10, 26, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(236, 72, 153, 0.2); }
+        .pink-btn { background: linear-gradient(135deg, #ec4899, #be185d); }
+        .pink-btn:hover { background: linear-gradient(135deg, #f472b6, #db2777); }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Logo Header -->
+    <header class="p-4 glass-card sticky top-0 z-40 flex justify-between items-center border-b border-pink-900/40">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full pink-btn flex items-center justify-center font-bold text-xl shadow-lg">B</div>
+            <div>
+                <h1 class="font-bold text-lg text-pink-500 pink-neon-glow leading-tight" id="store-title-display">متجر السعادة الرومانسية</h1>
+                <p class="text-xs text-pink-300/70" id="store-sub-display">BRITTON LIFE - حياة أكثر من مجرد لعبة</p>
+            </div>
+        </div>
+        <button onclick="toggleCart()" class="relative p-2 text-pink-400">
+            <i class="fa-solid fa-cart-shopping text-2xl"></i>
+            <span id="cart-badge" class="absolute -top-1 -right-1 bg-pink-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+        </button>
+    </header>
+
+    <!-- Main Content Dynamic Container -->
+    <main id="app-content" class="p-4 max-w-xl mx-auto">
+        <!-- Content injects here via JS -->
+    </main>
+
+    <!-- Bottom Navigation Bar (شريط تنقل سفلي) -->
+    <nav class="fixed bottom-0 left-0 right-0 glass-card border-t border-pink-900/40 z-50 flex justify-around items-center py-2 px-1">
+        <button onclick="navigate('home')" class="nav-btn flex flex-col items-center text-pink-500" id="nav-home">
+            <i class="fa-solid fa-house text-lg"></i>
+            <span class="text-[11px] mt-1 font-medium">الرئيسية</span>
+        </button>
+        <button onclick="navigate('categories')" class="nav-btn flex flex-col items-center text-pink-300/60" id="nav-categories">
+            <i class="fa-solid fa-layer-group text-lg"></i>
+            <span class="text-[11px] mt-1 font-medium">الأقسام</span>
+        </button>
+        <button onclick="navigate('about')" class="nav-btn flex flex-col items-center text-pink-300/60" id="nav-about">
+            <i class="fa-solid fa-circle-info text-lg"></i>
+            <span class="text-[11px] mt-1 font-medium">من نحن</span>
+        </button>
+        <button onclick="navigate('cart')" class="nav-btn flex flex-col items-center text-pink-300/60 relative" id="nav-cart">
+            <i class="fa-solid fa-user text-lg"></i>
+            <span class="text-[11px] mt-1 font-medium">حسابي والسلة</span>
+        </button>
+    </nav>
+
+    <!-- Invoice Preview Modal -->
+    <div id="invoice-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white text-gray-900 rounded-2xl p-6 max-w-md w-full max-h-[90vh] overflow-y-auto" id="invoice-printable">
+            <div class="text-center border-b pb-3 mb-3">
+                <h3 class="text-xs text-purple-600 font-bold tracking-widest uppercase">SAUDISEXTOYS.STORE</h3>
+                <span class="text-xs text-purple-700 bg-purple-100 font-bold px-2 py-0.5 rounded">NEW ORDER</span>
+                <h2 class="text-xl font-bold mt-1 text-gray-800">فاتورة طلب جديد</h2>
+                <p class="text-sm font-mono font-bold text-pink-600" id="inv-id"># DZ-101</p>
+            </div>
+            
+            <div class="grid grid-cols-3 text-center text-xs bg-gray-50 p-2 rounded-lg mb-3">
+                <div><span class="text-gray-400 block">تاريخ الإصدار</span><b id="inv-date">--</b></div>
+                <div><span class="text-gray-400 block">وقت الإصدار</span><b id="inv-time">--</b></div>
+                <div><span class="text-gray-400 block">حالة الطلب</span><b class="text-emerald-600">● بانتظار التأكيد</b></div>
+            </div>
+
+            <div class="mb-4 text-xs border-b pb-3">
+                <p class="font-bold text-purple-700 mb-1">■ بيانات العميل Customer</p>
+                <p class="font-bold text-sm text-gray-900" id="inv-name">--</p>
+                <p><span class="text-gray-500">الجوال:</span> <span id="inv-phone" class="font-mono">--</span></p>
+                <p><span class="text-gray-500">المدينة:</span> <span id="inv-city">--</span></p>
+                <p><span class="text-gray-500">الحي:</span> <span id="inv-district">--</span></p>
+                <p><span class="text-gray-500">العنوان الوطني:</span> <span id="inv-national" class="font-mono font-bold text-purple-800">--</span></p>
+            </div>
+
+            <table class="w-full text-xs text-right mb-4">
+                <thead class="bg-gray-100 text-gray-600">
+                    <tr><th class="p-1">المنتج</th><th class="p-1">الكمية</th><th class="p-1">السعر</th><th class="p-1">الإجمالي</th></tr>
+                </thead>
+                <tbody id="inv-items"></tbody>
+            </table>
+
+            <div class="border-t pt-2 text-xs flex justify-between font-bold text-gray-900">
+                <span>المبلغ الإجمالي:</span>
+                <span class="text-pink-600 text-sm" id="inv-total">0 ر.س</span>
+            </div>
+
+            <div class="mt-5 flex gap-2">
+                <button onclick="closeInvoice()" class="w-full bg-gray-200 py-2 rounded-xl text-xs font-bold text-gray-700">إغلاق</button>
+                <button onclick="window.print()" class="w-full bg-pink-600 py-2 rounded-xl text-xs font-bold text-white">طباعة الفاتورة</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Store (LocalStorage Backup)
+        const defaultCategories = ["ألعاب زوجية", "قضبان صناعية", "مهبل صناعي", "سدادات كريستال", "أجهزة مساج", "مستلزمات مثيرة"];
+        const defaultProducts = [
+            { id: 1, name: "طقم ألعاب زوجية الفاخر", price: 350, cat: "ألعاب زوجية", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=300" },
+            { id: 2, name: "قضيب سيليكون فاخر ناعم", price: 290, cat: "قضبان صناعية", img: "https://images.unsplash.com/photo-1544816155-12df9643f363?w=300" },
+            { id: 3, name: "مهبل صناعي تفاعلي ثلاثي الأبعاد", price: 320, cat: "مهبل صناعي", img: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=300" },
+            { id: 4, name: "سدادة مجوفة مرصعة بالكريستال", price: 180, cat: "سدادات كريستال", img: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300" }
+        ];
+
+        let cart = [];
+
+        function getStoreData() {
+            return {
+                products: JSON.parse(localStorage.getItem('britton_products')) || defaultProducts,
+                categories: JSON.parse(localStorage.getItem('britton_categories')) || defaultCategories,
+                email: "roooo77775@gmail.com"
+            }
+        }
+
+        function navigate(page) {
+            document.querySelectorAll('.nav-btn').forEach(b => b.className = 'nav-btn flex flex-col items-center text-pink-300/60');
+            document.getElementById('nav-' + page).className = 'nav-btn flex flex-col items-center text-pink-500';
+            
+            const main = document.getElementById('app-content');
+            const data = getStoreData();
+
+            if(page === 'home') {
+                main.innerHTML = `
+                    <div class="glass-card p-5 rounded-2xl mb-6 text-center border border-pink-500/30">
+                        <h2 class="text-xl font-extrabold text-pink-400 mb-2">متجر السعادة الرومانسية</h2>
+                        <p class="text-xs text-pink-200/80 leading-relaxed">أحدث المنتجات الزوجية الخاصة والتصاميم الحميمية الفاخرة مع خدمة التوصيل السريع والتغليف السري الكامل.</p>
+                    </div>
+                    <h3 class="font-bold text-sm text-pink-300 mb-3"><i class="fa-solid fa-fire text-pink-500 ml-1"></i> الأقسام الأكثر طلباً</h3>
+                    <div class="flex gap-2 overflow-x-auto pb-3 mb-6 no-scrollbar">
+                        ${data.categories.map(c => `<span class="bg-pink-950/60 text-pink-300 text-xs px-3 py-1.5 rounded-full border border-pink-700/40 whitespace-nowrap">${c}</span>`).join('')}
+                    </div>
+                    <h3 class="font-bold text-sm text-pink-300 mb-3"><i class="fa-solid fa-star text-pink-500 ml-1"></i> جميع المنتجات المتاحة</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        ${data.products.map(p => `
+                            <div class="glass-card rounded-xl p-3 border border-pink-900/30">
+                                <img src="${p.img}" class="w-full h-28 object-cover rounded-lg mb-2">
+                                <h4 class="font-bold text-xs line-clamp-1">${p.name}</h4>
+                                <span class="text-[10px] bg-pink-900/40 text-pink-300 px-1.5 py-0.5 rounded">${p.cat}</span>
+                                <div class="flex justify-between items-center mt-3">
+                                    <span class="text-sm font-bold text-pink-400">${p.price} ر.س</span>
+                                    <button onclick="addToCart(${p.id})" class="pink-btn text-white text-xs px-2.5 py-1 rounded-lg">إضافة</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else if(page === 'categories') {
+                main.innerHTML = `
+                    <h2 class="text-lg font-bold text-pink-400 mb-4"><i class="fa-solid fa-layer-group ml-2"></i> أقسام المتجر</h2>
+                    <div class="space-y-3">
+                        ${data.categories.map(c => `
+                            <div class="glass-card p-4 rounded-xl flex justify-between items-center">
+                                <span class="font-bold text-sm">${c}</span>
+                                <i class="fa-solid fa-chevron-left text-xs text-pink-400"></i>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else if(page === 'about') {
+                main.innerHTML = `
+                    <div class="glass-card p-5 rounded-2xl border border-pink-500/30 text-center">
+                        <div class="w-16 h-16 rounded-full pink-btn flex items-center justify-center font-bold text-2xl mx-auto mb-3 shadow-lg">B</div>
+                        <h2 class="text-lg font-bold text-pink-400 mb-2">عن متجر السعادة الرومانسية</h2>
+                        <p class="text-xs text-gray-300 leading-relaxed mb-4">نحن المتجر المتخصص الأول في الألعاب الزوجية والمستلزمات الحميمية بأعلى معايير الخصوصية والجودة. جميع الطلبات تخرج بتغليف مبهم دون ذكر المحتويات لضمان السرية التامة.</p>
+                        <div class="text-xs text-pink-300 bg-pink-950/40 p-3 rounded-xl border border-pink-800/40">
+                            <p class="font-bold">خدمة العملاء والإشعارات التلقائية:</p>
+                            <p class="mt-1 font-mono">roooo77775@gmail.com</p>
+                        </div>
+                    </div>
+                `;
+            } else if(page === 'cart') {
+                renderCartPage();
+            }
+        }
+
+        function addToCart(id) {
+            const data = getStoreData();
+            const prod = data.products.find(p => p.id === id);
+            if(prod) {
+                cart.push(prod);
+                updateCartBadge();
+                alert(`تمت إضافة ${prod.name} إلى السلة!`);
+            }
+        }
+
+        function updateCartBadge() {
+            const b = document.getElementById('cart-badge');
+            if(cart.length > 0) {
+                b.textContent = cart.length;
+                b.classList.remove('hidden');
+            } else {
+                b.classList.add('hidden');
+            }
+        }
+
+        function toggleCart() { navigate('cart'); }
+
+        function renderCartPage() {
+            const main = document.getElementById('app-content');
+            const total = cart.reduce((sum, i) => sum + i.price, 0);
+
+            main.innerHTML = `
+                <h2 class="text-lg font-bold text-pink-400 mb-4"><i class="fa-solid fa-basket-shopping ml-2"></i> سلة الشراء والطلب</h2>
+                ${cart.length === 0 ? '<p class="text-center text-xs text-gray-400 py-8">السلة فارغة حالياً</p>' : `
+                    <div class="space-y-2 mb-4">
+                        ${cart.map((item, index) => `
+                            <div class="glass-card p-3 rounded-xl flex justify-between items-center">
+                                <div>
+                                    <h4 class="font-bold text-xs">${item.name}</h4>
+                                    <span class="text-xs text-pink-400 font-bold">${item.price} ر.س</span>
+                                </div>
+                                <button onclick="cart.splice(${index},1); renderCartPage(); updateCartBadge();" class="text-red-400 text-xs">حذف</button>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <!-- نموذج الطلب السعودي الفاخر -->
+                    <div class="glass-card p-4 rounded-xl border border-pink-500/30 space-y-3">
+                        <h3 class="font-bold text-xs text-pink-300">بيانات التوصيل والشحن (السعودية)</h3>
+                        <input type="text" id="cust-name" placeholder="الاسم الكامل" class="w-full bg-black/40 border border-pink-900/50 rounded-lg p-2 text-xs text-white">
+                        <input type="text" id="cust-phone" placeholder="رقم الجوال (05xxxxxxx)" class="w-full bg-black/40 border border-pink-900/50 rounded-lg p-2 text-xs text-white">
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="text" id="cust-city" placeholder="المدينة" class="bg-black/40 border border-pink-900/50 rounded-lg p-2 text-xs text-white">
+                            <input type="text" id="cust-district" placeholder="الحي" class="bg-black/40 border border-pink-900/50 rounded-lg p-2 text-xs text-white">
+                        </div>
+                        <input type="text" id="cust-national" placeholder="العنوان الوطني (مثل: RQNC7751)" class="w-full bg-black/40 border border-pink-900/50 rounded-lg p-2 text-xs text-white">
+                        
+                        <div class="pt-2 border-t border-pink-900/40 flex justify-between font-bold text-sm">
+                            <span>الإجمالي:</span>
+                            <span class="text-pink-400">${total} ر.س</span>
+                        </div>
+                        <button onclick="submitOrder()" class="w-full pink-btn py-3 rounded-xl font-bold text-xs text-white">إرسال الطلب وحفظ الفاتورة تلقائياً</button>
+                    </div>
+                `}
+            `;
+        }
+
+        function submitOrder() {
+            const name = document.getElementById('cust-name').value;
+            const phone = document.getElementById('cust-phone').value;
+            const city = document.getElementById('cust-city').value;
+            const district = document.getElementById('cust-district').value;
+            const national = document.getElementById('cust-national').value;
+
+            if(!name || !phone || !city) {
+                alert('يرجى كتابة كافة البيانات الأساسية للتوصيل!');
+                return;
+            }
+
+            const total = cart.reduce((s, i) => s + i.price, 0);
+            const orderId = 'DZ-' + Math.floor(1000 + Math.random() * 9000);
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-GB');
+            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+            const orderData = {
+                id: orderId, name, phone, city, district, national,
+                items: cart, total, date: dateStr, time: timeStr
+            };
+
+            // حفظ الطلب داخل LocalStorage لتظهر في لوحة التحكم الإدارية
+            let existingOrders = JSON.parse(localStorage.getItem('britton_orders')) || [];
+            existingOrders.unshift(orderData);
+            localStorage.setItem('britton_orders', JSON.stringify(existingOrders));
+
+            // إعداد الفاتورة للشاشة
+            document.getElementById('inv-id').textContent = '# ' + orderId;
+            document.getElementById('inv-date').textContent = dateStr;
+            document.getElementById('inv-time').textContent = timeStr;
+            document.getElementById('inv-name').textContent = name;
+            document.getElementById('inv-phone').textContent = phone;
+            document.getElementById('inv-city').textContent = city;
+            document.getElementById('inv-district').textContent = district;
+            document.getElementById('inv-national').textContent = national || 'غير محدد';
+            document.getElementById('inv-total').textContent = total + ' ر.س';
+
+            const itemsTbody = document.getElementById('inv-items');
+            itemsTbody.innerHTML = cart.map(i => `
+                <tr class="border-b">
+                    <td class="p-1">${i.name}</td>
+                    <td class="p-1 text-center">1</td>
+                    <td class="p-1 text-center">${i.price} ر.س</td>
+                    <td class="p-1 text-left font-bold">${i.price} ر.س</td>
+                </tr>
+            `).join('');
+
+            // توجيه إيميل الإشعار التلقائي للبريد المعتمد roooo77775@gmail.com
+            const mailSubject = encodeURIComponent(`فاتورة طلب جديد #${orderId} - ${name}`);
+            const mailBody = encodeURIComponent(`طلب جديد من متجر السعادة الرومانسية:\nرقم الطلب: ${orderId}\nالعميل: ${name}\nالجوال: ${phone}\nالمدينة: ${city} - ${district}\nالعنوان الوطني: ${national}\nالمبلغ: ${total} ر.س`);
+            
+            // فتح الإيميل في الخلفية وتنبيه العميل
+            window.open(`mailto:roooo77775@gmail.com?subject=${mailSubject}&body=${mailBody}`, '_blank');
+
+            document.getElementById('invoice-modal').classList.remove('hidden');
+            cart = [];
+            updateCartBadge();
+        }
+
+        function closeInvoice() {
+            document.getElementById('invoice-modal').classList.add('hidden');
+            navigate('home');
+        }
+
+        // Initialize First View
+        navigate('home');
+    </script>
+</body>
+</html>
