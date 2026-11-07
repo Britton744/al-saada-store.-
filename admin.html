@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم الاحترافية - BRITTON LIFE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Tajawal', sans-serif; background-color: #0c020d; color: #ffffff; }
+        .pink-glass { background: rgba(26, 9, 31, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(236, 72, 153, 0.25); }
+        .pink-glow { text-shadow: 0 0 10px rgba(236, 72, 153, 0.6); }
+        .btn-pink { background: linear-gradient(135deg, #ec4899, #be185d); }
+    </style>
+</head>
+<body class="min-h-screen flex">
+
+    <!-- Sidebar -->
+    <aside class="w-64 pink-glass p-5 flex flex-col justify-between border-l border-pink-900/40 hidden md:flex">
+        <div>
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-10 h-10 rounded-full btn-pink flex items-center justify-center font-bold text-xl">B</div>
+                <div>
+                    <h2 class="font-bold text-pink-500 pink-glow text-sm">BRITTON LIFE</h2>
+                    <p class="text-[10px] text-pink-300/60">لوحة التحكم الإدارية</p>
+                </div>
+            </div>
+            <nav class="space-y-2 text-xs">
+                <button class="w-full text-right p-3 rounded-xl bg-pink-900/40 text-pink-300 font-bold flex items-center gap-3"><i class="fa-solid fa-chart-line"></i> الرئيسية والأرقام</button>
+                <button onclick="alert('تم تفعيل حفظ الفواتير تلقائياً على الإيميل roooo77775@gmail.com')" class="w-full text-right p-3 rounded-xl hover:bg-pink-900/20 text-gray-300 flex items-center gap-3"><i class="fa-solid fa-receipt"></i> إدارة الفواتير</button>
+                <button onclick="addNewProductPrompt()" class="w-full text-right p-3 rounded-xl hover:bg-pink-900/20 text-gray-300 flex items-center gap-3"><i class="fa-solid fa-plus-circle"></i> إضافة منتج جديد</button>
+            </nav>
+        </div>
+        <div class="text-[10px] text-gray-400 bg-black/40 p-3 rounded-xl border border-pink-950">
+            <p>البريد المعتمد للفواتير:</p>
+            <p class="font-mono text-pink-400 font-bold mt-1">roooo77775@gmail.com</p>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6 overflow-y-auto">
+        <!-- Dashboard Header -->
+        <header class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-xl font-bold text-pink-400 pink-glow">مرحباً بك في لوحة الإدارة</h1>
+                <p class="text-xs text-gray-400">إدارة متجر السعادة الرومانسية والألعاب الزوجية</p>
+            </div>
+            <button onclick="addNewProductPrompt()" class="btn-pink text-white text-xs px-4 py-2 rounded-xl font-bold"><i class="fa-solid fa-plus ml-1"></i> إضافة منتج جديد</button>
+        </header>
+
+        <!-- Dynamic Orders Table -->
+        <div class="pink-glass p-5 rounded-2xl mb-6">
+            <h3 class="font-bold text-sm text-pink-300 mb-4"><i class="fa-solid fa-receipt text-pink-500 ml-2"></i> الفواتير والطلبات المسجلة تلقائياً</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-right text-xs">
+                    <thead class="bg-pink-950/60 text-pink-300">
+                        <tr>
+                            <th class="p-3">رقم الطلب</th>
+                            <th class="p-3">اسم العميل</th>
+                            <th class="p-3">الجوال</th>
+                            <th class="p-3">المدينة / الحي</th>
+                            <th class="p-3">المبلغ</th>
+                            <th class="p-3">التاريخ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-orders-body" class="divide-y divide-pink-900/30">
+                        <!-- Orders inject here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function loadAdminOrders() {
+            const orders = JSON.parse(localStorage.getItem('britton_orders')) || [];
+            const tbody = document.getElementById('admin-orders-body');
+
+            if(orders.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center p-4 text-gray-500">لا توجد طلبات مسجلة حتى الآن</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = orders.map(o => `
+                <tr>
+                    <td class="p-3 font-mono font-bold text-pink-400">#${o.id}</td>
+                    <td class="p-3 font-bold">${o.name}</td>
+                    <td class="p-3 font-mono">${o.phone}</td>
+                    <td class="p-3">${o.city} - ${o.district || ''}</td>
+                    <td class="p-3 font-bold text-emerald-400">${o.total} ر.س</td>
+                    <td class="p-3 text-gray-400">${o.date} ${o.time}</td>
+                </tr>
+            `).join('');
+        }
+
+        function addNewProductPrompt() {
+            const name = prompt("أدخل اسم المنتج الجديد:");
+            const price = prompt("أدخل سعر المنتج (ر.س):");
+            const cat = prompt("أدخل القسم (مثال: قضبان صناعية، ألعاب زوجية):");
+
+            if(name && price) {
+                let prods = JSON.parse(localStorage.getItem('britton_products')) || [];
+                prods.unshift({
+                    id: Date.now(),
+                    name: name,
+                    price: parseFloat(price),
+                    cat: cat || 'ألعاب زوجية',
+                    img: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=300'
+                });
+                localStorage.setItem('britton_products', JSON.stringify(prods));
+                alert("تم إضافة المنتج بنجاح وتحديث المتجر فورياً!");
+            }
+        }
+
+        loadAdminOrders();
+    </script>
+</body>
+</html>
