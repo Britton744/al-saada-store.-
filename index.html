@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090507"><meta name="description" content="متجر السعادة الزوجية — متجر إلكتروني بتجربة تسوق راقية.">
+<title>متجر السعادة الزوجية | الرئيسية</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><a class="logo" href="index.html">♡ <span>متجر السعادة الزوجية<small>السعادة الزوجية</small></span></a><nav><button onclick="openPage('home')">الرئيسية</button><button onclick="openPage('categories')">الأقسام</button><button onclick="openPage('about')">من نحن</button></nav><button class="iconbtn" onclick="openCart()">السلة <b id="cartCount">0</b></button></header>
+<main>
+<section id="home" class="view active">
+<div class="hero"><div><span class="eyebrow">تجربة تسوق راقية</span><h1>متجر السعادة الزوجية</h1><h2>حياة أكثر من مجرد لعبة</h2><p>اكتشف منتجات مختارة بعناية وتجربة تسوق سهلة وآمنة.</p><button class="pinkbtn" onclick="openPage('categories')">تسوق الآن ←</button></div><div class="hero-mark">♛</div></div>
+<div class="trust"><div>🚚<b>شحن سريع</b><small>حسب نطاق التوصيل</small></div><div>♢<b>منتجات مختارة</b><small>جودة واهتمام بالتفاصيل</small></div><div>♡<b>خصوصية</b><small>بياناتك محفوظة بأمان</small></div></div>
+<section class="section"><div class="sectionhead"><h2>الأقسام الرئيسية</h2><button class="textbtn" onclick="openPage('categories')">عرض الكل ←</button></div><div id="homeCats" class="cats"></div></section>
+<section class="section"><div class="sectionhead"><h2>منتجات مختارة</h2><span class="muted">تسوق بثقة</span></div><div id="homeProducts" class="products"></div></section>
+</section>
+<section id="categories" class="view"><div class="section"><div class="sectionhead"><h2>جميع الأقسام</h2></div><div id="allCats" class="cats"></div><div class="sectionhead"><h2>كل المنتجات</h2></div><div id="allProducts" class="products"></div></div></section>
+<section id="about" class="view"><div class="section"><div class="panel"><h2>من نحن</h2><p>متجر السعادة الزوجية يهتم بتقديم تجربة تسوق مريحة ومنتجات مختارة بعناية.</p><h3>لماذا متجر السعادة الزوجية؟</h3><p>سهولة الطلب، وضوح الأسعار، ومتابعة الطلب حتى إتمامه.</p><h3>تواصل معنا</h3><p>للاستفسارات حول الطلبات، استخدم بيانات التواصل التي يضيفها مدير المتجر في الإعدادات.</p></div></div></section>
+<section id="cart" class="view"><div class="section"><div class="sectionhead"><h2>سلة التسوق</h2><button class="textbtn" onclick="openPage('categories')">متابعة التسوق</button></div><div id="cartItems" class="panel">السلة فارغة.</div><div class="panel totalrow"><b>الإجمالي</b><strong id="cartTotal">0 ر.س</strong></div><button id="checkoutBtn" class="pinkbtn wide" onclick="openPage('checkout')">إتمام الطلب ←</button></div></section>
+<section id="checkout" class="view"><div class="section narrow"><div class="sectionhead"><h2>إتمام الطلب</h2></div><form id="checkoutForm" class="panel form">
+<label>الاسم الكامل<input name="name" required autocomplete="name" placeholder="اكتب الاسم الكامل"></label>
+<label>رقم الجوال<input name="phone" required inputmode="tel" autocomplete="tel" placeholder="05xxxxxxxx"></label>
+<label>المدينة<input name="city" required autocomplete="address-level2" placeholder="المدينة"></label>
+<label>الحي<input name="district" required placeholder="الحي"></label>
+<label>العنوان الوطني<input name="nationalAddress" required autocomplete="street-address" placeholder="العنوان الوطني بالتفصيل"></label>
+<label>ملاحظات (اختياري)<textarea name="notes" rows="3" placeholder="أي تفاصيل إضافية للتوصيل"></textarea></label>
+<div id="checkoutSummary" class="muted"></div><button class="pinkbtn wide" type="submit">تأكيد الطلب</button><p class="muted tiny">لن يتم تحصيل مبلغ إلكترونياً في هذه النسخة إلا بعد ربط بوابة دفع معتمدة.</p>
+</form></div></section>
+<section id="success" class="view"><div class="section narrow panel center"><div class="success">✓</div><h2>تم استلام طلبك</h2><p id="successText">شكراً لثقتك بمتجر السعادة الزوجية.</p><button class="pinkbtn" onclick="printInvoice()">طباعة / حفظ الفاتورة PDF</button><div id="invoice" class="invoice"></div><button class="textbtn" onclick="openPage('home')">العودة للمتجر</button></div></section>
+</main>
+<footer><b>متجر السعادة الزوجية</b><p>© <span id="year"></span> جميع الحقوق محفوظة</p><a href="admin.html" rel="nofollow" class="adminlink">دخول الإدارة</a></footer>
+<div id="toast" class="toast"></div>
+
+<!-- شريط التنقل السفلي التفاعلي -->
+<nav class="bottom-nav">
+  <button onclick="openPage('home')">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+    <span>الرئيسية</span>
+  </button>
+  <button onclick="openPage('categories')">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+    <span>الأقسام</span>
+  </button>
+  <button onclick="openPage('categories')">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+    <span>المنتجات</span>
+  </button>
+  <button onclick="openCart()">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+    <span>السلة</span>
+  </button>
+  <button onclick="openPage('about')">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="18" x2="20" y2="18"></line></svg>
+    <span>المزيد</span>
+  </button>
+</nav>
+
+<script type="module" src="store.js"></script>
+</body></html>
